@@ -1,0 +1,20 @@
+<?php
+include "koneksi.php";
+
+$id = $_GET['id'];
+
+// Ambil data gambar
+$data = mysqli_query($koneksi, "SELECT foto FROM namasiswa WHERE id=$id");
+$row = mysqli_fetch_assoc($data);
+
+$foto = $row['foto'];
+
+// Hapus file
+unlink("gambar/$foto");
+
+// Hapus database
+mysqli_query($koneksi, "DELETE FROM namasiswa WHERE id=$id");
+
+echo "Gambar berhasil dihapus.<br>";
+echo "<a href='tampil_foto.php'>Kembali</a>";
+?>
