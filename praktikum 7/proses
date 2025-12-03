@@ -1,0 +1,39 @@
+<?php
+include "koneksi.php";
+
+$nama = $_POST['nama'];
+
+// DATA FILE
+$foto = $_FILES['foto']['name'];
+$tmp = $_FILES['foto']['tmp_name'];
+$ukuran = $_FILES['foto']['size'];
+
+$folder = "gambar/";
+$ext = strtolower(pathinfo($foto, PATHINFO_EXTENSION));
+$valid = ['jpg','jpeg','png','gif'];
+
+$namaBaru = rand(1000, 999999) . "." . $ext;
+
+// Validasi
+if (!in_array($ext, $valid)) {
+    die("Tipe file tidak diizinkan. <a href='input_foto.php'>Kembali</a>");
+}
+
+if ($ukuran > 1000000) { // maks 1 MB
+    die("Ukuran file terlalu besar. <a href='input_foto.php'>Kembali</a>");
+}
+
+// Upload file
+if (move_uploaded_file($tmp, $folder . $namaBaru)) {
+    
+    $query = "INSERT INTO namasiswa (nama, foto)
+              VALUES ('$nama', '$namaBaru')";
+    mysqli_query($koneksi, $query);
+
+    echo "Berhasil disimpan!<br>";
+    echo "<img src='gambar/$namaBaru' height='200'><br>";
+    echo "<a href='tampil_foto.php'>Lihat Foto</a>";
+} else {
+    echo "Upload gagal!";
+}
+?>
