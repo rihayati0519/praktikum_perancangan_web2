@@ -1,0 +1,32 @@
+<?php
+include "koneksi.php";
+$hasil = mysqli_query($koneksi, "SELECT * FROM namasiswa ORDER BY id DESC");
+?>
+
+<h2>Daftar Foto</h2>
+<a href="input_foto.php">Upload Baru</a>
+<br><br>
+
+<table border="1" width="500">
+    <tr>
+        <th>ID</th>
+        <th>Nama</th>
+        <th>Foto</th>
+        <th>Aksi</th>
+    </tr>
+
+<?php while ($row = mysqli_fetch_assoc($hasil)) { ?>
+    <tr>
+        <td><?= $row['id'] ?></td>
+        <td><?= $row['nama'] ?></td>
+        <td align="center">
+            <img src="gambar/<?= $row['foto'] ?>" width="60">
+        </td>
+        <td>
+            <a href="delete.php?id=<?= $row['id'] ?>"
+               onclick="return confirm('Yakin hapus?')">DELETE</a>
+        </td>
+    </tr>
+<?php } ?>
+
+</table>
